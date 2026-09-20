@@ -1,6 +1,6 @@
 # SPARC — Prediksi Repeat Order Pelanggan Dealer Otomotif
 
-> Analisis dan model machine learning untuk memprediksi probabilitas pelanggan melakukan pembelian ulang (repeat order) pada dealer motor, sekaligus memetakan *kapan* dan *siapa* yang paling layak di-follow-up oleh tim marketing.
+> Analisis dan model machine learning untuk memprediksi probabilitas pelanggan melakukan pembelian ulang (repeat order) pada dealer motor, sekaligus memetakan _kapan_ dan _siapa_ yang paling layak di-follow-up oleh tim marketing.
 
 **Dataset:** [SPARC_dataset.csv](https://raw.githubusercontent.com/micelll/SPARC-2026/main/SPARC_dataset.csv) (sumber: [repo SPARC-2026](https://github.com/micelll/SPARC-2026))
 
@@ -10,7 +10,7 @@
 
 Dealer memiliki basis pelanggan yang besar, tetapi anggaran retensi terbatas. Menghubungi semua pelanggan sama saja dengan membakar biaya kampanye ke orang-orang yang memang tidak akan kembali. Pertanyaan bisnisnya sederhana:
 
-> Dari profil pelanggan **di hari pertama mereka bertransaksi** (usia, metode pembayaran, uang muka, tipe motor, lokasi, dsb.), seberapa besar peluang mereka akan **membeli lagi di masa depan** — dan kapan?
+> Dari profil pelanggan **di hari pertama mereka bertransaksi** (usia, metode pembayaran, uang muka, tipe motor, lokasi, dsb.), seberapa besar peluang mereka akan **membeli lagi di masa depan** dan kapan?
 
 Untuk menjawab itu, masalah dibingkai menjadi dua bagian:
 
@@ -19,9 +19,9 @@ Untuk menjawab itu, masalah dibingkai menjadi dua bagian:
 
 **Definisi target:**
 
-| Label | Arti | Definisi operasional |
-|-------|------|----------------------|
-| **1** | Repeat Order | Pelanggan tercatat minimal **2 transaksi pada tanggal berbeda** |
+| Label | Arti           | Definisi operasional                                                     |
+| ----- | -------------- | ------------------------------------------------------------------------ |
+| **1** | Repeat Order   | Pelanggan tercatat minimal **2 transaksi pada tanggal berbeda**          |
 | **0** | One-Time Buyer | Pelanggan hanya bertransaksi pada **1 tanggal** dan tidak pernah kembali |
 
 Temuan awal yang penting: dari **266.926 pelanggan**, hanya **12,9%** yang repeat order. Ini adalah masalah retensi yang serius sekaligus tantangan teknis berupa **class imbalance** yang harus ditangani dengan hati-hati.
@@ -67,7 +67,7 @@ Notebook `Repeat-order-optimization.ipynb` dikerjakan sebagai satu alur analisis
 
 8. **Model Evaluation** — Classification report, confusion matrix, permutation importance, SHAP, serta Lift/Gain chart untuk konteks bisnis.
 
-9. **Survival Analysis** — Kaplan-Meier & Cox Proportional Hazards untuk menjawab *kapan* repeat order terjadi.
+9. **Survival Analysis** — Kaplan-Meier & Cox Proportional Hazards untuk menjawab _kapan_ repeat order terjadi.
 
 ---
 
@@ -85,7 +85,7 @@ Pengguna **kredit** punya probabilitas repeat order **14,65%**, jauh di atas pen
 
 ![Probabilitas repeat order: Cash vs Credit](assets/03_cash_vs_credit.png)
 
-**Kapan mereka kembali — ada "Golden Window".**
+**Golden Window Time Period**
 Konsentrasi tertinggi (~28%) pelanggan repeat order terjadi di **tahun pertama**. Namun median berada di ~700 hari, artinya separuh pelanggan butuh **sekitar dua tahun** untuk kembali. Implikasinya strategi follow-up perlu **dua fase**, penawaran agresif di 365 hari pertama, lalu program pemeliharaan hubungan hingga tahun kedua.
 
 ![Distribusi durasi menuju transaksi kedua](assets/04_golden_window.png)
@@ -101,14 +101,14 @@ Segmen non-matic (SPORT LOW memimpin di **23,4%**, disusul CUB & SPORT lain di 1
 
 Semua faktor kunci diuji signifikansinya dan **seluruhnya lolos** (p-value < 0,05), mengonfirmasi bahwa pola di EDA nyata secara statistik:
 
-| Faktor | Uji | P-Value | Kesimpulan |
-|--------|-----|---------|------------|
-| Umur | Mann-Whitney | 4,8e-150 | Signifikan |
-| Metode pembayaran | Chi-Square | ~0,0000 | Signifikan |
-| Tenor | Mann-Whitney | ~0,0000 | Signifikan |
-| Finance Company | Chi-Square | ~0,0000 | Signifikan |
-| Wilayah | Chi-Square | ~0,0000 | Signifikan |
-| Jumlah Unit | Chi-Square | ~0,0000 | Signifikan |
+| Faktor            | Uji          | P-Value  | Kesimpulan |
+| ----------------- | ------------ | -------- | ---------- |
+| Umur              | Mann-Whitney | 4,8e-150 | Signifikan |
+| Metode pembayaran | Chi-Square   | ~0,0000  | Signifikan |
+| Tenor             | Mann-Whitney | ~0,0000  | Signifikan |
+| Finance Company   | Chi-Square   | ~0,0000  | Signifikan |
+| Wilayah           | Chi-Square   | ~0,0000  | Signifikan |
+| Jumlah Unit       | Chi-Square   | ~0,0000  | Signifikan |
 
 meski populasi pembeli multi-unit sangat kecil, uji Chi-Square tetap signifikan. artinya dalam dataset ini perilaku beli banyak unit **bukan anomali acak**, melainkan prediktor yang kuat.
 
@@ -122,17 +122,17 @@ meski populasi pembeli multi-unit sangat kecil, uji Chi-Square tetap signifikan.
 
 **Perbandingan model** (dievaluasi di validation set, dioptimalkan pada ROC-AUC):
 
-| Model | Val ROC-AUC | Best F1 (val) |
-|-------|-------------|---------------|
-| **XGBoost** ✅ | **0,7141** | 0,3330 |
-| GradientBoosting | 0,7130 | 0,3321 |
-| HistGradientBoosting | 0,7129 | 0,3304 |
-| RandomForest | 0,7083 | 0,3284 |
+| Model                | Val ROC-AUC | Best F1 (val) |
+| -------------------- | ----------- | ------------- |
+| **XGBoost** ✅       | **0,7141**  | 0,3330        |
+| GradientBoosting     | 0,7130      | 0,3321        |
+| HistGradientBoosting | 0,7129      | 0,3304        |
+| RandomForest         | 0,7083      | 0,3284        |
 
 Model terpilih: **XGBoost**. Pada **test set independen**, performa akhir:
 
 - **ROC-AUC: 0,7056**
-- **Recall (kelas repeat order): 0,62** 
+- **Recall (kelas repeat order): 0,62**
 - **Precision (kelas repeat order): 0,22**
 
 model dioptimalkan untuk **recall tinggi**. Untuk kasus retensi, "melewatkan" pelanggan loyal (false negative) jauh lebih mahal daripada "salah sasar" (false positive). Konsekuensinya presisi turun ke 22% dimana artinya tim akan menghubungi sejumlah pelanggan yang ternyata tidak kembali, tetapi itu trade-off yang disengaja demi tidak kehilangan peluang emas.
@@ -141,15 +141,15 @@ model dioptimalkan untuk **recall tinggi**. Untuk kasus retensi, "melewatkan" pe
 
 ### 4.5 Lift Gain Analysis
 
-model memberi **skor probabilitas repeat order** ke tiap pelanggan, lalu semua pelanggan **diurutkan dari skor tertinggi ke terendah** dan dibagi menjadi 10 kelompok sama besar (*decile*). Decile 1 = 10% pelanggan yang menurut model paling mungkin kembali; Decile 10 = paling tidak mungkin. Pertanyaan bisnisnya: *"kalau budget hanya cukup menghubungi sebagian pelanggan, siapa yang didahulukan?"* Chart ini menjawabnya:
+model memberi **skor probabilitas repeat order** ke tiap pelanggan, lalu semua pelanggan **diurutkan dari skor tertinggi ke terendah** dan dibagi menjadi 10 kelompok sama besar (_decile_). Decile 1 = 10% pelanggan yang menurut model paling mungkin kembali sementara Decile 10 = paling tidak mungkin. Pertanyaan bisnisnya: _"kalau budget hanya cukup menghubungi sebagian pelanggan, siapa yang didahulukan?"_ Chart ini menjawabnya
 
 ![Lift & Cumulative Gain chart](assets/10_lift_gain.png)
 
 - **Hubungi 20% pelanggan teratas (Decile 1–2) → dapat 38,7% dari semua repeat order.** Artinya cukup menyentuh 1 dari 5 pelanggan, tim sudah menjaring hampir 4 dari 10 pelanggan yang benar-benar akan kembali.
-- **Lift 2,08x** membandingkan hasil ini dengan menebak acak. Kalau 20% pelanggan dipilih acak, wajarnya hanya dapat ~20% repeat order; dengan model hasilnya 38,7% — **2,08 kali lebih banyak** untuk usaha yang sama. Jadi *lift* = seberapa kali lipat model mengalahkan tebakan buta.
+- **Lift 2,08x** membandingkan hasil ini dengan menebak acak. Kalau 20% pelanggan dipilih acak, wajarnya hanya dapat ~20% repeat order; dengan model hasilnya 38,7% — **2,08 kali lebih banyak** untuk usaha yang sama. Jadi _lift_ = seberapa kali lipat model mengalahkan tebakan buta.
 - **Hubungi 50% pelanggan teratas (Decile 1–5) → dapat ~77% dari semua repeat order.** Sisa 50% pelanggan (Decile 6–10) hanya menyumbang ~23% target, sehingga tidak efisien untuk dikejar.
 
-**Arti temuan:** anggaran kampanye bisa dipangkas drastis — cukup targetkan segmen berskor tinggi — tanpa kehilangan banyak peluang, karena pelanggan yang "dilewati" memang kecil kemungkinannya repeat order.
+anggaran kampanye bisa dipangkas drastis dengan cara menargetkan segmen berskor tinggi, cara ini juga bisa dilakukan tanpa kehilangan banyak peluang, karena pelanggan yang dilewati memang kecil kemungkinannya repeat order.
 
 **Nilai bisnis model — Lift & Gain.**
 Ini bagian yang paling relevan untuk marketing. Dengan mengurutkan pelanggan berdasarkan skor model:
@@ -159,35 +159,31 @@ Ini bagian yang paling relevan untuk marketing. Dengan mengurutkan pelanggan ber
 
 Artinya anggaran kampanye bisa dipangkas drastis sambil tetap menjangkau mayoritas pelanggan potensial.
 
+### 4.6 Survival Analysis, Analisis Momentum Repeat Order Terjadi
 
-### 4.6 Survival Analysis, *Kapan* Repeat Order Terjadi
-
-Sebelum masuk survival analysis, ada temuan penting: fitur `Recency_Days` **dibuang dari model klasifikasi** karena berkorelasi linier sempurna dengan tanggal transaksi (R² = 1,00) — ia hanya mengukur *lama data tersedia di sistem* (right-censoring bias), bukan perilaku pelanggan. Membiarkannya akan menciptakan **data leakage** (AUC palsu 0,6979 hanya dari satu fitur). Informasi waktu ini kemudian ditangani dengan benar lewat survival analysis.
+dalam project ini fitur Recency_Days sengaja dibuang dari model klasifikasi karena korelasinya linier sempurna dengan tanggal transaksi ($R^2 = 1,00$). Artinya, fitur ini sebenarnya tidak sedang membaca perilaku pelanggan, melainkan hanya menghitung berapa lama data tersebut tersimpan di dalam sistem (censoring bias). Jika dibiarkan, fitur ini akan memicu data leakage, di mana model bisa mendapat skor AUC palsu sebesar 0,6979 hanya dari satu fitur tersebut. Sebagai gantinya, informasi waktu dan durasi ini ditangani secara lebih akurat dan tepat sasaran menggunakan analisis survival.
 
 **Kaplan-Meier.** Kurva retensi kelompok **kredit** mulai berpisah signifikan setelah ~500 hari. pada 500 hari dan seterusnya probabilitas belum-repeat turun lebih cepat pada kelompok pembayaran credit card, mengonfirmasi kredit mempercepat pembelian ulang seiring waktu.
 
 ![Kurva Kaplan-Meier](assets/11_kaplan_meier.png)
 ![Cox PH — Hazard Ratio per faktor](assets/12_cox_hazard.png)
 
-
 ### 4.7 Risk Scoring dari Survival Model
 
-Model Cox memberi tiap pelanggan sebuah skor seberapa siap mereka untuk beli lagi, yang disebut *partial hazard*. Skor ini dihitung dari faktor-faktor pelanggan (usia, tipe motor, jumlah unit, DP, dll) dimana faktor yang mempercepat repeat order menaikkan skor, faktor yang memperlambat menurunkannyKata *"partial"* menandakan skor ini **bukan probabilitas** ("70% akan kembali") **dan bukan tanggal pasti**, melainkan **perbandingan terhadap pelanggan "rata-rata"**. Titik acuannya (*baseline*) adalah pelanggan hipotetis dengan nilai fitur standar — rata-rata untuk fitur angka, kategori acuan untuk fitur kategori — yang skornya ditetapkan **= 1,0**. Jadi:
+Model Cox memberi tiap pelanggan sebuah skor seberapa siap mereka untuk beli lagi, yang disebut _partial hazard_. Skor ini dihitung dari faktor-faktor pelanggan (usia, tipe motor, jumlah unit, DP, dll) dimana faktor yang mempercepat repeat order menaikkan skor, faktor yang memperlambat menurunkannya. Kata _"partial"_ menandakan skor ini **bukan probabilitas** ("70% akan kembali") **dan bukan tanggal pasti**, melainkan **perbandingan terhadap pelanggan "rata-rata"**. Titik acuannya adalah pelanggan hipotetis dengan nilai fitur standar (rata-rata untuk fitur angka, kategori acuan untuk fitur kategori) yang skornya ditetapkan **= 1,0**. Jadi:
 
 - Partial hazard **2,0** → laju kembali **2x lebih cepat** dari pelanggan rata-rata.
 - Partial hazard **0,5** → laju kembali **setengahnya** (lebih lambat) dari pelanggan rata-rata.
 
 Karena semua pelanggan dibandingkan ke acuan yang sama, otomatis mereka juga bisa diperbandingkan satu sama lain (pelanggan skor 2,0 kembali 2x lebih cepat dari pelanggan skor 1,0). Ibaratnya **peringkat kelas**, tapi "titik nol"-nya bukan satu siswa nyata melainkan **siswa dengan nilai rata-rata**.
 
-Kata *"partial"* menandakan skor ini **hanya perbandingan relatif antar pelanggan**, bukan probabilitas ("70% akan kembali") dan bukan tanggal pasti. kita tak tahu angka absolutnya, tapi tahu siapa yang di urutan atas. Pelanggan dengan partial hazard 2,0 diprediksi kembali kira-kira 2x lebih cepat dibanding yang skornya 1,0. Skor inilah yang dipakai untuk mengurutkan pelanggan, lalu membaginya ke 10 *decile* — sama mekanismenya seperti Lift & Gain klasifikasi. Yang membedakan adalah **jenis skor yang dipakai untuk mengurutkan** dan menghitung variable timing 
-
-| Decile | Jumlah | Repeat Order | Rate | % Target tertangkap | Lift |
-|--------|--------|--------------|------|---------------------|------|
-| **1** (risiko tertinggi) | 5.325 | 1.168 | 21,9% | 16,96% | **1,70x** |
-| 2 | 5.324 | 932 | 17,5% | 30,50% | 1,35x |
-| 3 | 5.325 | 808 | 15,2% | 42,23% | 1,17x |
-| **4** | 5.324 | 899 | 16,9% | **55,29%** | 1,31x |
-| 5–10 | — | — | — | 100% | < 1x |
+| Decile                   | Jumlah | Repeat Order | Rate  | % Target tertangkap | Lift      |
+| ------------------------ | ------ | ------------ | ----- | ------------------- | --------- |
+| **1** (risiko tertinggi) | 5.325  | 1.168        | 21,9% | 16,96%              | **1,70x** |
+| 2                        | 5.324  | 932          | 17,5% | 30,50%              | 1,35x     |
+| 3                        | 5.325  | 808          | 15,2% | 42,23%              | 1,17x     |
+| **4**                    | 5.324  | 899          | 16,9% | **55,29%**          | 1,31x     |
+| 5–10                     | —      | —            | —     | 100%                | < 1x      |
 
 Decile 1 (10% pelanggan paling "cepat kembali") menangkap **16,96%** dari seluruh repeat order dengan **lift 1,70x** dibanding acak, dan **4 decile teratas (40% populasi) sudah mencakup 55,29%** transaksi ulang. Implikasinya tim marketing bisa memfokuskan anggaran retensi pada **Decile 1–4** untuk memaksimalkan ROI, alih-alih menjangkau seluruh basis pelanggan secara merata.
 
@@ -198,14 +194,14 @@ Decile 1 (10% pelanggan paling "cepat kembali") menangkap **16,96%** dari seluru
 - **Retensi rendah tapi terprediksi.** Hanya 12,9% pelanggan yang repeat order, namun perilaku ini punya pola yang jelas dan tervalidasi secara statistik.
 - **Profil pelanggan loyal:** usia matang (36–45), memakai **kredit**, mengambil **tenor pendek**, membeli motor **non-matic**, dengan **DP/cicilan relatif besar** terhadap harga (kapasitas finansial kuat), dan cenderung membeli lebih dari satu unit di awal.
 - **Model layak dipakai untuk targeting.** Meski presisi absolut rendah (wajar untuk data imbalance), nilai bisnisnya kuat: **lift 2x** di dua desil teratas dan **77% target tertangkap dari 50% populasi**.
-- **Waktu itu penting.** Kombinasi klasifikasi (*siapa*) + survival analysis (*kapan*) memberi gambaran lengkap untuk merancang kampanye retensi.
+- **Waktu itu penting.** Kombinasi klasifikasi (_siapa_) + survival analysis (_kapan_) memberi gambaran lengkap untuk merancang kampanye retensi.
 
 ---
 
 ## 6. Rekomendasi
 
 1. **Prioritaskan anggaran retensi ke Decile 1–4** hasil skor model, bukan seluruh basis pelanggan — cara paling efisien memaksimalkan ROI kampanye.
-2. **Terapkan follow-up dua fase:** penawaran agresif di **365 hari pertama** (golden window) untuk konversi cepat, lalu program *nurturing* berkala hingga tahun kedua untuk menangkap pelanggan yang butuh waktu lebih lama.
+2. **Terapkan follow-up dua fase:** penawaran agresif di **365 hari pertama** (golden window) untuk konversi cepat, lalu program _nurturing_ berkala hingga tahun kedua untuk menangkap pelanggan yang butuh waktu lebih lama.
 3. **Dorong skema kredit & tenor pendek** yang sehat, karena keduanya konsisten berasosiasi dengan loyalitas lebih tinggi.
 4. **Sesuaikan pesan per segmen:** manfaatkan loyalitas alami segmen non-matic; untuk wilayah/finance company dengan retensi rendah (mis. wilayah 6503 & 6472), evaluasi kualitas program pasca-penjualan, bukan sekadar kemudahan akuisisi.
 5. **Pantau data leakage sebagai standar.** Pembuangan `Recency_Days` menegaskan pentingnya memisahkan sinyal perilaku asli dari artefak durasi observasi sebelum model dibawa ke produksi.
