@@ -159,34 +159,6 @@ Ini bagian yang paling relevan untuk marketing. Dengan mengurutkan pelanggan ber
 
 Artinya anggaran kampanye bisa dipangkas drastis sambil tetap menjangkau mayoritas pelanggan potensial.
 
-### 4.6 Survival Analysis, Analisis Momentum Repeat Order Terjadi
-
-dalam project ini fitur Recency_Days sengaja dibuang dari model klasifikasi karena korelasinya linier sempurna dengan tanggal transaksi ($R^2 = 1,00$). Artinya, fitur ini sebenarnya tidak sedang membaca perilaku pelanggan, melainkan hanya menghitung berapa lama data tersebut tersimpan di dalam sistem (censoring bias). Jika dibiarkan, fitur ini akan memicu data leakage, di mana model bisa mendapat skor AUC palsu sebesar 0,6979 hanya dari satu fitur tersebut. Sebagai gantinya, informasi waktu dan durasi ini ditangani secara lebih akurat dan tepat sasaran menggunakan analisis survival.
-
-**Kaplan-Meier.** Kurva retensi kelompok **kredit** mulai berpisah signifikan setelah ~500 hari. pada 500 hari dan seterusnya probabilitas belum-repeat turun lebih cepat pada kelompok pembayaran credit card, mengonfirmasi kredit mempercepat pembelian ulang seiring waktu.
-
-![Kurva Kaplan-Meier](assets/11_kaplan_meier.png)
-![Cox PH — Hazard Ratio per faktor](assets/12_cox_hazard.png)
-
-### 4.7 Risk Scoring dari Survival Model
-
-Model Cox memberi tiap pelanggan sebuah skor seberapa siap mereka untuk beli lagi, yang disebut _partial hazard_. Skor ini dihitung dari faktor-faktor pelanggan (usia, tipe motor, jumlah unit, DP, dll) dimana faktor yang mempercepat repeat order menaikkan skor, faktor yang memperlambat menurunkannya. Kata _"partial"_ menandakan skor ini **bukan probabilitas** ("70% akan kembali") **dan bukan tanggal pasti**, melainkan **perbandingan terhadap pelanggan "rata-rata"**. Titik acuannya adalah pelanggan hipotetis dengan nilai fitur standar (rata-rata untuk fitur angka, kategori acuan untuk fitur kategori) yang skornya ditetapkan **= 1,0**. Jadi:
-
-- Partial hazard **2,0** → laju kembali **2x lebih cepat** dari pelanggan rata-rata.
-- Partial hazard **0,5** → laju kembali **setengahnya** (lebih lambat) dari pelanggan rata-rata.
-
-Karena semua pelanggan dibandingkan ke acuan yang sama, otomatis mereka juga bisa diperbandingkan satu sama lain (pelanggan skor 2,0 kembali 2x lebih cepat dari pelanggan skor 1,0). Ibaratnya **peringkat kelas**, tapi "titik nol"-nya bukan satu siswa nyata melainkan **siswa dengan nilai rata-rata**.
-
-| Decile                   | Jumlah | Repeat Order | Rate  | % Target tertangkap | Lift      |
-| ------------------------ | ------ | ------------ | ----- | ------------------- | --------- |
-| **1** (risiko tertinggi) | 5.325  | 1.168        | 21,9% | 16,96%              | **1,70x** |
-| 2                        | 5.324  | 932          | 17,5% | 30,50%              | 1,35x     |
-| 3                        | 5.325  | 808          | 15,2% | 42,23%              | 1,17x     |
-| **4**                    | 5.324  | 899          | 16,9% | **55,29%**          | 1,31x     |
-| 5–10                     | —      | —            | —     | 100%                | < 1x      |
-
-Decile 1 (10% pelanggan paling "cepat kembali") menangkap **16,96%** dari seluruh repeat order dengan **lift 1,70x** dibanding acak, dan **4 decile teratas (40% populasi) sudah mencakup 55,29%** transaksi ulang. Implikasinya tim marketing bisa memfokuskan anggaran retensi pada **Decile 1–4** untuk memaksimalkan ROI, alih-alih menjangkau seluruh basis pelanggan secara merata.
-
 ---
 
 ## 5. Kesimpulan
