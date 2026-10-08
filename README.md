@@ -112,11 +112,7 @@ Semua faktor kunci diuji signifikansinya dan **seluruhnya lolos** (p-value < 0,0
 
 meski populasi pembeli multi-unit sangat kecil, uji Chi-Square tetap signifikan. artinya dalam dataset ini perilaku beli banyak unit **bukan anomali acak**, melainkan prediktor yang kuat.
 
-### 4.3 Ringkasan Insight (Executive Dashboard)
-
-![Executive dashboard ringkasan insight](assets/06_executive_dashboard.png)
-
-### 4.4 Modeling & Evaluation (Klasifikasi)
+### 4.3 Modeling & Evaluation (Klasifikasi)
 
 **Penanganan imbalance.** Dilakukan undersampling kelas mayoritas hanya di training set, validation & test dibiarkan pada proporsi asli agar evaluasi mencerminkan kondisi nyata. SMOTE sengaja dihindari agar model belajar dari pola asli, bukan data sintetis.
 
@@ -124,16 +120,16 @@ meski populasi pembeli multi-unit sangat kecil, uji Chi-Square tetap signifikan.
 
 | Model                | Val ROC-AUC | Best F1 (val) |
 | -------------------- | ----------- | ------------- |
-| **XGBoost** ✅       | **0,7141**  | 0,3330        |
-| GradientBoosting     | 0,7130      | 0,3321        |
-| HistGradientBoosting | 0,7129      | 0,3304        |
-| RandomForest         | 0,7083      | 0,3284        |
+| HistGradientBoosting | 0,7141      | 0.3318        |
+| GradientBoosting     | 0.7138      | 0.3319        |
+| XGBoost              | 0.7139      | 0.3279        |
+| RandomForest         | 0,7083      | 0.3321        |
 
 Model terpilih: **XGBoost**. Pada **test set independen**, performa akhir:
 
-- **ROC-AUC: 0,7056**
-- **Recall (kelas repeat order): 0,62**
-- **Precision (kelas repeat order): 0,22**
+- **ROC-AUC: 0,7081**
+- **Recall (kelas repeat order): 0,60**
+- **Precision (kelas repeat order): 0,23**
 
 model dioptimalkan untuk **recall tinggi**. Untuk kasus retensi, "melewatkan" pelanggan loyal (false negative) jauh lebih mahal daripada "salah sasar" (false positive). Konsekuensinya presisi turun ke 22% dimana artinya tim akan menghubungi sejumlah pelanggan yang ternyata tidak kembali, tetapi itu trade-off yang disengaja demi tidak kehilangan peluang emas.
 
