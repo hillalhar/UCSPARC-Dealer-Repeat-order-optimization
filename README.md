@@ -67,8 +67,6 @@ Notebook `Repeat-order-optimization.ipynb` dikerjakan sebagai satu alur analisis
 
 8. **Model Evaluation** — Classification report, confusion matrix, permutation importance, SHAP, serta Lift/Gain chart untuk konteks bisnis.
 
-9. **Survival Analysis** — Kaplan-Meier & Cox Proportional Hazards untuk menjawab _kapan_ repeat order terjadi.
-
 ---
 
 ## 4. Hasil & Temuan
