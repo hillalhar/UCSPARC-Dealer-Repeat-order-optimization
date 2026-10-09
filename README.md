@@ -118,14 +118,14 @@ meski populasi pembeli multi-unit sangat kecil, uji Chi-Square tetap signifikan.
 
 | Model                | Val ROC-AUC | Best F1 (val) |
 | -------------------- | ----------- | ------------- |
-| HistGradientBoosting | 0,7141      | 0.3318        |
-| GradientBoosting     | 0.7138      | 0.3319        |
+| HistGradientBoosting | 0,7141      | 0.3319        |
+| GradientBoosting     | 0.7138      | 0.3318        |
 | XGBoost              | 0.7139      | 0.3279        |
 | RandomForest         | 0,7083      | 0.3321        |
 
-Model terpilih: **XGBoost**. Pada **test set independen**, performa akhir:
+Model terpilih: **HistGradientBoost**. Pada **test set independen**, performa akhir:
 
-- **ROC-AUC: 0,7081**
+- **ROC-AUC: 0,7141**
 - **Recall (kelas repeat order): 0,60**
 - **Precision (kelas repeat order): 0,23**
 
