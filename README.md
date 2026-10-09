@@ -121,7 +121,7 @@ meski populasi pembeli multi-unit sangat kecil, uji Chi-Square tetap signifikan.
 | HistGradientBoosting | 0,7141      | 0.3319        |
 | GradientBoosting     | 0.7138      | 0.3318        |
 | XGBoost              | 0.7139      | 0.3279        |
-| RandomForest         | 0,7083      | 0.3321        |
+| RandomForest         | 0,7083      | 0.3221        |
 
 Model terpilih: **HistGradientBoost**. Pada **test set independen**, performa akhir:
 
