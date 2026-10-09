@@ -133,6 +133,8 @@ model dioptimalkan untuk **recall tinggi**. Untuk kasus retensi, "melewatkan" pe
 
 ![Confusion matrix pada test set](assets/07_confusion_matrix.png)
 
+![Cls report](assets/15-Classification-report.png)
+
 ![shap_val](assets/13_shap_val.png)
 
 ![shap_val](assets/14_shap_feature_importance.png)
@@ -162,9 +164,7 @@ Artinya anggaran kampanye bisa dipangkas drastis sambil tetap menjangkau mayorit
 ## 5. Kesimpulan
 
 - **Retensi rendah tapi terprediksi.** Hanya 12,9% pelanggan yang repeat order, namun perilaku ini punya pola yang jelas dan tervalidasi secara statistik.
-- **Profil pelanggan loyal:** usia matang (36–45), memakai **kredit**, mengambil **tenor pendek**, membeli motor **non-matic**, dengan **DP/cicilan relatif besar** terhadap harga (kapasitas finansial kuat), dan cenderung membeli lebih dari satu unit di awal.
-- **Model layak dipakai untuk targeting.** Meski presisi absolut rendah (wajar untuk data imbalance), nilai bisnisnya kuat: **lift 2x** di dua desil teratas dan **77% target tertangkap dari 50% populasi**.
-- **Waktu itu penting.** Kombinasi klasifikasi (_siapa_) + survival analysis (_kapan_) memberi gambaran lengkap untuk merancang kampanye retensi.
+- **Profil pelanggan loyal:** usia matang (24–40), memakai **kredit**, mengambil **tenor pendek**, membeli motor **non-matic**, dengan **DP/cicilan relatif besar** terhadap harga (kapasitas finansial kuat), dan cenderung membeli lebih dari satu unit di awal.
 
 ---
 
@@ -174,6 +174,5 @@ Artinya anggaran kampanye bisa dipangkas drastis sambil tetap menjangkau mayorit
 2. **Terapkan follow-up dua fase:** penawaran agresif di **365 hari pertama** (golden window) untuk konversi cepat, lalu program _nurturing_ berkala hingga tahun kedua untuk menangkap pelanggan yang butuh waktu lebih lama.
 3. **Dorong skema kredit & tenor pendek** yang sehat, karena keduanya konsisten berasosiasi dengan loyalitas lebih tinggi.
 4. **Sesuaikan pesan per segmen:** manfaatkan loyalitas alami segmen non-matic; untuk wilayah/finance company dengan retensi rendah (mis. wilayah 6503 & 6472), evaluasi kualitas program pasca-penjualan, bukan sekadar kemudahan akuisisi.
-5. **Pantau data leakage sebagai standar.** Pembuangan `Recency_Days` menegaskan pentingnya memisahkan sinyal perilaku asli dari artefak durasi observasi sebelum model dibawa ke produksi.
 
 ---
