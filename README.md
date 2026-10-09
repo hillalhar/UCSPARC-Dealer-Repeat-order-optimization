@@ -133,6 +133,10 @@ model dioptimalkan untuk **recall tinggi**. Untuk kasus retensi, "melewatkan" pe
 
 ![Confusion matrix pada test set](assets/07_confusion_matrix.png)
 
+![shap_val](assets/13_shap_val.png)
+
+![shap_val](assets/14_shap_feature_importance.png)
+
 ### 4.5 Lift Gain Analysis
 
 model memberi **skor probabilitas repeat order** ke tiap pelanggan, lalu semua pelanggan **diurutkan dari skor tertinggi ke terendah** dan dibagi menjadi 10 kelompok sama besar (_decile_). Decile 1 = 10% pelanggan yang menurut model paling mungkin kembali sementara Decile 10 = paling tidak mungkin. Pertanyaan bisnisnya: _"kalau budget hanya cukup menghubungi sebagian pelanggan, siapa yang didahulukan?"_ Chart ini menjawabnya
